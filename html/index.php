@@ -5,6 +5,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,  user-scalable = no"> 
 <link rel="stylesheet" type="text/css" href="indexstyle.css">
+<script src="scripts/jquery.js"></script>
+<script>
+  $( document ).ready(function() {
+	alert("I am an alert box!");
+  });
+</script>
 </head>
 <body>
 <div id="container">
