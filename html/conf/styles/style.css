@@ -1,0 +1,49 @@
+	@import url(http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold&subset=latin);
+* {margin:0px;padding:0px;width:auto;height:auto;}
+html, body {margin:0px;padding:0px;width:auto;height:auto;border:0px;font-family: 'Droid Sans';background-color:#111;color:#fff}
+h3 {color:#000;}
+table {
+	width:auto;
+	height:100%;
+	border-collapse:collapse
+	text-align:center;
+	font-weight:bold;
+	font-size:20px;
+	margin:0px 5px 0px 5px;
+	padding:0px;
+	}
+#tb_data {
+	height:29px;
+	}
+#tb_data2 {
+	height:5px;
+	}
+#tab_top td{
+	padding-top:25px;
+	}
+#tab_bot td{
+	padding-bottom:25px;
+	}
+#tab_oth td{
+	
+	}
+#td_num {
+	width:25px;
+	}
+#td_id {
+	width:250px;
+	}
+#td_name {
+	width:340px;
+	}
+#td_temp {
+	width:120px;
+	}
+#check_long {
+	float:left;
+	margin:10px 5px 0px 0px;
+	padding:5px;
+	border-radius:25px;
+	background-color:#7af;
+}
+

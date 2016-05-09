@@ -1,0 +1,21 @@
+index.php-Startseite
+index.php.png-RIP
+live_data3.php-Live Daten
+long_data.php-Langzeit Daten
+php_test.php-PHP Test
+phpmyadmin_forward.php-Datenbank
+
+connect.php-Datenbank Verbindungstest
+create.php-Neue Sensoren hinzufügen
+exportdb.php-Datenbank leeren & CSV erstellen
+push_long_time.php-Langzeit Aufzeichnung ausführen
+test.php-Vorbereitungsdatei für Live Daten
+
+test1.php-1OG & EG
+test2.php-KG & BHZG
+test3.php-HZG & ETH
+test4.php-WW_Sp & Solar
+test5.php-1OG KZ
+test6.php-ANDERE
+test7.php-NEUE
+
