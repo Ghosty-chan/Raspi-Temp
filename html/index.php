@@ -7,6 +7,9 @@
 <link rel="stylesheet" type="text/css" href="indexstyle.css">
 <script src="scripts/jquery.js"></script>
 <script>
+  $( document ).load(function() {
+	$("body").fadeOut();
+  }) ;
   $( document ).ready(function() {
 	$("body").fadeIn();
   });
