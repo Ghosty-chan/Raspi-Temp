@@ -3,11 +3,11 @@
 <head>
 <title> Index - Raspberry </title>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,  user-scalable = no"> 
+<meta name="viewport" content="width=device-width,  user-scalable = yes"> 
 
 <?php 
 	if(!empty($_COOKIE['_theme'])) $style = $_COOKIE['_theme'];
-	else $style = "none";
+	else $style = "style";
 ?>
 <link id="hoja_estilo" rel="stylesheet" href="conf/styles/index<?php echo "$style" ?>.css" type="text/css" media="screen" />
 <!--<link rel="stylesheet" type="text/css" href="conf/styles/indexstyle.css">-->
