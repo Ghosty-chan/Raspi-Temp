@@ -8,7 +8,7 @@
 <script src="scripts/jquery.js"></script>
 <script>
   $( document ).ready(function() {
-	alert("I am an alert box!");
+	$("body").fadeIn();
   });
 </script>
 </head>
