@@ -1,0 +1,6 @@
+{
+  "name": "Raspi temp",
+  "tagline": "raspberry pi temperature 1wire sensor ",
+  "body": "# raspi_temp\r\n*webfiles to keep track the temperatures in my house -> with the 1-wire sensors...*\r\n\r\n***\r\n\r\n## Pakets used/in-use / Devices:\r\n  * Apache2\r\n  * Mysql-server\r\n  * phpmyadmin\r\n  * php5\r\n  * 1-wire temperature sensors\r\n\r\n***\r\n## Screenshots\r\n\r\n### Index page | Startseite\r\n*index.php*\r\n\r\n![ Index Page ](img/index.PNG?raw=true \"Index Page\")\r\n\r\n### Live temperatures | Live Temperaturen\r\n*live_data3.php*\r\n\r\n![ Live Daten ](img/live_daten.PNG?raw=true \"Live Daten\")\r\n\r\n### Long-time temperatures | Langzeit Temperaturen\r\n*long_datamenu.php*\r\n\r\n![ Long Data ](img/long_data.PNG?raw=true \"Live Data\")\r\n\r\n***\r\n\r\n###### * more comming soon *\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
