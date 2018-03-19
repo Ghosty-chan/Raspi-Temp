@@ -1,0 +1,69 @@
+* {
+	margin:0;
+	padding:0;
+	font-family: Century Gothic, sans-serif;
+}
+body {
+	background-color:#333;
+
+}
+.container {
+	width: 100%;
+	height: 100%;
+	background-image:url('../icon/overlay.png');
+	position: absolute;
+	left: 0px; top: 0px;
+	width: 100%; height: 100%;
+	z-index: -1;
+	background-repeat: repeat;
+}
+/* HEADER - Menubar*/
+	.quick_all {
+		width: 99%;
+		height: 135px;
+		margin: 5px auto;
+	}
+    .menu_bar {
+		list-style-type: none;
+		padding: 0px;
+		margin: 0px;
+		width: 100%;
+		height: 100%;
+		display: flex-inline;
+		list-style:none;
+		flex-wrap:wrap;
+		align-items: center;
+		justify-content: center;
+	}
+	.menu_bar_li  {
+		width:100%;
+		height:100%;
+		display:block;
+		background-color: #fff;
+		padding:0px;
+		line-height:25px;
+		-webkit-transition: background-color 1s;
+		transition: background-color 1s;
+		border-radius:50px;
+	}
+	.menu_bar_li:first-child  {
+		background: #88aaf4;
+
+	}
+	.menu_bar_li:hover {
+		background: #478ae4;
+	}
+	.a_buttons {
+		width:100%;
+		height:100%;
+		display: block;
+		color: #333;
+		text-align: center;
+		text-decoration: none;
+		padding:25px 0px 0px 0px;
+	}
+	.button_icon {
+		margin: 5px 0px 0px 0px;
+		width: 45px;
+		height: 45px;
+	}

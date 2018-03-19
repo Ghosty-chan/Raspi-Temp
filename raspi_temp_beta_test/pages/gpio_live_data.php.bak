@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Raspberry Pi GPIO</title>
+        <style>
+        @import url(http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold&subset=latin);
+        html, body {width:100%;height:100%;margin:0px;padding:0px;border:0px;font-family: 'Droid Sans';background-color:#111;color:#fff}
+        .button_holder{margin-bottom:5px;border:1px solid #7af;overflow:hidden;}
+        .button_holder,#button_label {padding:5px;font-size:18pt;font-weight:bold;}
+        #button_label {border-bottom:1px solid #444;}
+        .clear {content:"";clear:both;display:table;}
+        .button_name {width:500px;height: 65px;line-height:65px;float:left;}
+        .button_name_bhzg {width:500px;height: 45px;line-height:45px;float:left;}
+        .button_change {background:#7af;width:100%;text-align:center;height: 65px;line-height:65px;display:block;}
+        .buttons_bhzg {height: 40px !important;line-height:40px !important;display:block;}
+        .button_change_r {background:#450000;width:100%;text-align:center;height: 65px;line-height:65px;display:block;}
+        .button_change_g {background:#003f00;width:100%;text-align:center;height: 65px;line-height:65px;display:block;}
+        .ui-slider {height:25px;line-height:25px;margin:15px 50px 5px 50px;}
+        .rangetext {font-weight:bold;color:#fff;text-align:center;}
+
+        </style>
+        <link href="../conf/styles/jquery-ui.css" rel="stylesheet">
+    </head>
+ 
+    <body>    
+    <?php
+    function sql_query($sql_query) {
+        include "php/connect.php";
+        $result = mysqli_query($con,$sql_query);
+        if (!$result){
+            echo "Abfrage konnte nicht ausgeführt werden! <br> # $result <br> # " . mysqli_error($con);
+        }
+        mysqli_close($con);
+        return $result;
+    }
+    $gpio_pins = array();
+    $gpio_names = array();
+    $gpio_ios = array();
+    $gpio_status = array();
+
+    $sql = "SELECT * FROM basis_gpio";
+    $result = sql_query($sql);
+    while($row = mysqli_fetch_array($result)){
+        array_push($gpio_pins,$row['Pin']);
+        array_push($gpio_names,$row['Name']);
+        array_push($gpio_ios,$row['IO']);
+    }
+    // Output
+    echo ("<div class='button_holder'>");
+    //echo ("<div class='button_header'>")
+    foreach($gpio_names as $key => $value) {
+        if($gpio_ios[$key] == "OUT") {
+            echo ("<div id='button_label'>");
+            if(substr($gpio_names[$key], 0, 4) == "BHZG") {
+            echo ("<span class='button_name_bhzg button_name'> $gpio_names[$key] | $gpio_ios[$key] </span><span id='button_change_".$gpio_pins[$key]."' class='buttons_bhzg button_change'> - - </span><div class='sliders' id='range_".$gpio_names[$key]."'></div><div class='rangetext' id='rangetext_".$gpio_names[$key]."'></div>");
+            } else {
+            echo ("<span class='button_name'> $gpio_names[$key] | $gpio_ios[$key] </span><span id='button_change_".$gpio_pins[$key]."' class='button_change'>");
+            }
+            echo ("<div class='clear'></div></div>");
+        }
+    }
+    echo ("</div>");
+    // Input
+    echo ("<div class='button_holder'>");
+    foreach($gpio_names as $key => $value) {
+        if($gpio_ios[$key] == "IN") {
+            echo ("<div id='button_label'>");
+            echo ("<span class='button_name'> $gpio_names[$key] | $gpio_ios[$key] </span><span id='button_change_".$gpio_pins[$key]."' class='button_change'> - - </span>");
+            echo ("<div class='clear'></div></div>");
+        }
+    }
+    echo ("</div>");
+    ?>
+
+    <!-- javascript -->
+    <script src="../conf/scripts/jquery_test.js"></script>
+    <script src="../conf/scripts/jquery-ui.js"></script>
+    <script>
+        var Buttons = [];
+    <?php
+        function getSliderValues($range_name) {
+            $sql = "SELECT ".$range_name."_RANGE FROM settings";
+            $result = sql_query($sql);
+            return $result; 
+        }
+        // Create Sliders
+        foreach($gpio_names as $key => $value) {
+            if(substr($value, 0, 4) == "BHZG" && !strpos(substr($value,4), "Schaltung" )){
+            $slider_values = getSliderValues("$gpio_names[$key]");
+            $slider_values = mysqli_fetch_assoc($slider_values)[$gpio_names[$key]."_RANGE"];
+            echo ('var slidetext_'.$value.' = $("#rangetext_'.$value.'");');
+            echo ('$( "#range_'.$value.'" ).slider({range: true, min: 20, max: 25, step: 0.1, animate: "slow", values: ['.$slider_values.'], create: function() { slidetext_'.$value.'.text( $(this).slider( "values" ) );},slide: function( event, ui) {slidetext_'.$value.'.text( ui.values );},stop: function( event, ui ) {change_db_settings("'.$gpio_names[$key].'", $(this).slider( "values" ));}});');
+            }
+        }
+        // Create JS Button vars
+        foreach($gpio_pins as $key => $value) {
+            echo ('var button_'.$value.' = document.getElementById("button_change_'.$value.'");');
+            echo ('Buttons.push("button_'.$value.'");');
+        }
+        // Time for Interval
+            echo ('setInterval(function(){');
+        foreach($gpio_pins as $key => $value) {
+            if($gpio_ios[$key] == "IN"){
+                $gpio_in = 1;
+            } else {
+                $gpio_in = 0;
+            }
+            echo ('change_pin (button_'.$value.','.$value.','.$gpio_in.');');
+        }
+            echo ('}, 1000);');
+    ?>
+        function change_db_settings ( pin, values ) {
+            var data = 0;
+            var request = new XMLHttpRequest();
+            request.open("GET", "php/update_db_settings.php?pin="+pin+"&values="+values,true)
+            request.send(null);
+            request.onreadystatechange = function () {
+                console.log("Data changed: "+pin+" | "+values+" | "+this.responseText);
+            }
+        }
+    </script>
+    <script src="../conf/scripts/fnc_change_pin.js"></script>
+    </body>
+</html>

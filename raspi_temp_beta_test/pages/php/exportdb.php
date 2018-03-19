@@ -1,0 +1,90 @@
+<?php
+// First Connection
+	echo date("j.n.Y G:i:s")."<hr>";
+$tables = array("long_data1","long_data_gpio");
+foreach($tables as $tb_key => $tb_value) {
+include 'connect.php';
+	echo "$tb_value <br>";
+// Fetch Data
+// Lets get actual date and fetch the data from it which is older than xy days
+
+$data="";
+$deleteafterdays=30; // j.n.Y G:i:s
+$curdate=date("j.n.Y");
+$deldate=strtotime("-1 month", strtotime($curdate));
+$deldate=date("j.n.Y", $deldate);
+
+$sql='SELECT * FROM `'.$tb_value.'` WHERE `Datum` < DATE_SUB(NOW(), INTERVAL 1 MONTH)';
+	echo "$sql <br>";
+$result=mysqli_query($con,$sql);
+
+$id_array=array();
+$data=array();
+
+if(mysqli_num_rows($result) > 0) {
+	while($row = mysqli_fetch_assoc($result)){
+		$id=$row["ID"];
+		array_push($data,$row);
+		array_push($id_array, $id);
+	}
+}
+
+foreach ($id_array as $key => $value) {
+	$delete_string.="$value,";
+}
+	$highest_id = max($id_array);
+	$lowest_id 	= min($id_array);
+	$delete_string=substr($delete_string, 0, -1);
+	echo "Deleted IDs: ".$delete_string."<br>";
+	$sql="DELETE FROM `".$tb_value."` WHERE `ID` BETWEEN ".$lowest_id." AND ".$highest_id;
+	echo "$sql <br>";
+	$result=mysqli_query($con,$sql);
+
+
+// Reorder Mysql table  
+
+$sql="SET @num := 0;UPDATE `".$tb_value."` SET `ID` = @num := (@num+1);ALTER TABLE `".$tb_value."` AUTO_INCREMENT =1;";
+	echo "$sql <br>";
+$result=mysqli_multi_query($con,$sql);
+
+// First Connection done
+mysqli_close($con);
+	echo "<hr>";
+}
+/*
+// Open Second one
+
+include('connect2.php');
+
+// Export Data to other Server
+
+	// Date Variables for actual Date
+	$dbdate=strtotime("-1 month", strtotime($curdate));
+	$dbdate=date("F-Y", $dbdate);
+	//
+
+$sql='CREATE TABLE IF NOT EXISTS `'.$dbdate.'` (`ID` int(11) NOT NULL,  `Datum` datetime NOT NULL,  `1OG_KZ` text NOT NULL,  `1OG_RL` text NOT NULL,  `1OG_VL` text NOT NULL,  `BHZG_RL` text NOT NULL,  `BHZG_VL` text NOT NULL,  `EG_RL` text NOT NULL,  `EG_VL` text NOT NULL,  `ETH_RL` text NOT NULL,  `ETH_VL` text NOT NULL,  `HZG_RL` text NOT NULL,  `HZG_VL` text NOT NULL,  `HZV_Temp` text NOT NULL,  `KG_RL` text NOT NULL,  `KG_VL` text NOT NULL,  `KG_KZ` text NOT NULL,  `Solar_RL` text NOT NULL,  `Solar_VL` text NOT NULL,  `WW_Sp_RL` text NOT NULL,  `WW_Sp_VL` text NOT NULL,  `WW_Sp_Eintritt` text NOT NULL,  `WW_Sp_Mitte` text NOT NULL,  `WW_Sp_Austritt` text NOT NULL,  `Aussen_Temp` text) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;ALTER TABLE `'.$dbdate.'` ADD PRIMARY KEY (`ID`);ALTER TABLE `'.$dbdate.'` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;';
+
+$result=mysqli_multi_query($con2,$sql);
+
+mysqli_close($con2);
+sleep(5);
+include('connect2.php');
+
+foreach ($data as $data_key => $data_value) {
+		$sql_add="";
+	foreach($data_value as $array_key => $array_value) {
+		$sql_add .= "' $array_value',";
+	}
+		$sql_add_find=strpos($sql_add,",");
+		$sql_add=substr($sql_add,$sql_add_find+1,-1);
+
+$sql='INSERT INTO `raspi-temp-bk`.`'.$dbdate.'` (`ID`, `Datum`, `1OG_KZ`, `1OG_RL`, `1OG_VL`, `BHZG_RL`, `BHZG_VL`, `EG_RL`, `EG_VL`, `ETH_RL`, `ETH_VL`, `HZG_RL`, `HZG_VL`, `HZV_Temp`, `KG_RL`, `KG_VL`, `KG_KZ`, `Solar_RL`, `Solar_VL`, `WW_Sp_RL`, `WW_Sp_VL`, `WW_Sp_Eintritt`, `WW_Sp_Mitte`, `WW_Sp_Austritt`, `Aussen_Temp`) VALUES (NULL, '.$sql_add.');';
+
+$result=mysqli_query($con2,$sql);
+}
+mysqli_close($con2);
+*/
+?>
+
+
