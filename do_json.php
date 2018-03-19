@@ -1,0 +1,28 @@
+<html>
+<?php
+	header("content-type: application/json"); 
+	include 'connect.php';
+	
+	$sql = "select * from long_data1";
+	$result = mysqli_query($con, $sql) or die("Error in Selecting " . mysqli($con));
+	
+	$file_output = array();
+	
+	
+	while ($row = mysqli_fetch_assoc($result))
+	{
+				$Datum = $row['Datum'];
+				$Date  = substr($Datum,0,strpos($Datum,"-"));
+				$Time  = substr($Datum,1+strpos($Datum,"-"));
+				$Timezeit = "$Date $Time";
+				$Datum = strtotime("$Timezeit");
+				$Datum *= 1000;
+				$file_output[] = array( $Datum , $row['1OG_RL'] , $row['1OG_VL']);
+	}
+	
+	echo json_encode($file_output, JSON_NUMERIC_CHECK);	
+
+	mysqli_close($con);
+
+?>
+</html>

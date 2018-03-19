@@ -1,0 +1,6 @@
+sending incremental file list
+deleting pages/php/exportdb_log.html	y
+pages/live_data3.php		~
+pages/php/zirkpumpen_schaltung.php	y
+
+sent 30,284 bytes  received 420 bytes  61,408.00 bytes/sec
